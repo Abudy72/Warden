@@ -2,9 +2,10 @@ package Warden.Main;
 
 import Warden.Flyway.FlywayMigration;
 
-public class Driver {
+import java.net.URISyntaxException;
 
-    public static void main(String[] args) {
+public class Driver {
+    public static void main(String[] args) throws URISyntaxException {
         FlywayMigration.migrate();
     }
 }

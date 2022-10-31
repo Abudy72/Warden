@@ -1,5 +1,5 @@
 CREATE table actions(
-    action_id varchar(255) not null PRIMARY KEY,
+    action_id bigint not null PRIMARY KEY,
     member_id bigint not null,
     guild_id bigint not null,
     action_Type varchar(64) not null,
