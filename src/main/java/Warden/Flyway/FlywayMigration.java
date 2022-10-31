@@ -18,7 +18,7 @@ public class FlywayMigration {
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-        Flyway flyway = Flyway.configure().dataSource(dbUrl,username,password).load();
+        Flyway flyway = Flyway.configure().dataSource(dbUrl,username,password).defaultSchema("Warden").load();
         MigrateResult migrate= flyway.migrate();
         System.out.println("Success status: " + migrate.success);
         System.out.println("Migrations: " + migrate.migrationsExecuted);
