@@ -34,7 +34,9 @@ public class ConnectionManager {
 
     public static Connection getConnection(){
         try{
-            return dataSource.getConnection();
+            Connection connection = dataSource.getConnection();
+            connection.setSchema("Warden");
+            return connection;
         }catch (SQLException e){
             Logger logger = Logger.getLogger(ConnectionManager.class.getName());
             logger.severe(e.getMessage());
