@@ -2,7 +2,7 @@ package Warden.Server.Tokens;
 
 import Warden.ConnectionPooling.ConnectionManager;
 import Warden.Dao.Dao;
-import Warden.Server.WardenTokens;
+import Warden.Server.Authorization.WardenTokens;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import static Warden.Main.Driver.getMyLogger;
 

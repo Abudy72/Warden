@@ -3,7 +3,7 @@ CREATE SEQUENCE token_sequence
     INCREMENT BY 105332;
 CREATE table warden_tokens(
     id bigint DEFAULT (nextval('token_sequence')),
-    token varchar(255) not null,
+    token varchar(255) not null UNIQUE,
     is_Claimed boolean not null DEFAULT false,
     claimed_by bigint UNIQUE,
 

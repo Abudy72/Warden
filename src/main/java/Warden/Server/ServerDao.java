@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import static Warden.Main.Driver.getMyLogger;
 
@@ -48,4 +47,6 @@ public class ServerDao implements Dao<ServerImpl> {
     public boolean delete(ServerImpl serverImpl) {
         return false;
     }
+
+
 }

@@ -1,4 +1,4 @@
-package Warden.Server;
+package Warden.Server.Authorization;
 
 import java.util.Random;
 import java.util.UUID;
@@ -8,7 +8,7 @@ public class WardenTokens{
     private long guild_id;
     private boolean claimed = false;
     private long tokenId;
-    public WardenTokens(String token, long guild_id, boolean claimed, long tokenId) {
+     public WardenTokens(String token, long guild_id, boolean claimed, long tokenId) {
         this.token = token;
         this.guild_id = guild_id;
         this.claimed = claimed;
@@ -39,8 +39,11 @@ public class WardenTokens{
     protected void claimTicket() {
         this.claimed = true;
     }
-
     public long getTokenId() {
         return tokenId;
+    }
+
+    protected void setGuild_id(long guild_id){
+         this.guild_id = guild_id;
     }
 }
