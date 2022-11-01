@@ -2,7 +2,7 @@ package Warden.Server.Tokens;
 
 import Warden.ConnectionPooling.ConnectionManager;
 import Warden.Dao.Dao;
-import Warden.Server.WardenTokens;
+import Warden.Server.Authorization.WardenTokens;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,8 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
+
+import static Warden.Main.Driver.getMyLogger;
 
 public class TokensDao implements Dao<WardenTokens> {
     @Override
@@ -26,13 +27,13 @@ public class TokensDao implements Dao<WardenTokens> {
                 WardenTokens wardenTokens = new WardenTokens(
                         resultSet.getString("token"),
                         resultSet.getLong("guild_id"),
-                        resultSet.getBoolean("is_claimed")
+                        resultSet.getBoolean("is_claimed"),
+                        resultSet.getLong("token_id")
                 );
                 return Optional.of(wardenTokens);
             }
         }catch (SQLException e){
-            Logger.getAnonymousLogger().warning(e.getMessage());
-            e.printStackTrace();
+            getMyLogger().fatal(e.getMessage());
         }
         return Optional.empty();
     }
@@ -48,19 +49,20 @@ public class TokensDao implements Dao<WardenTokens> {
                 WardenTokens wardenTokens = new WardenTokens(
                         resultSet.getString("token"),
                         resultSet.getLong("guild_id"),
-                        resultSet.getBoolean("is_claimed")
+                        resultSet.getBoolean("is_claimed"),
+                        resultSet.getLong("token_id")
                 );
                 wardenTokensList.add(wardenTokens);
             }
         }catch (SQLException e){
-            Logger.getAnonymousLogger().warning(e.getMessage());
+            getMyLogger().fatal(e.getMessage());
             e.printStackTrace();
         }
         return wardenTokensList;
     }
     @Override
     public boolean save(WardenTokens wardenTokens) {
-        String statement = "INSERT INTO warden_tokens (guild_id,token,is_claimed) values (?,?,?)";
+        String statement = "INSERT INTO warden_tokens (claimed_by,token,is_claimed) values (?,?,?)";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
@@ -69,14 +71,14 @@ public class TokensDao implements Dao<WardenTokens> {
             preparedStatement.setBoolean(3,wardenTokens.isClaimed());
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException e){
-            Logger.getAnonymousLogger().warning(e.getMessage());
+            getMyLogger().fatal(e.getMessage());
             e.printStackTrace();
         }
         return false;
     }
     @Override
     public boolean update(WardenTokens wardenTokens) {
-        String statement = "UPDATE warden_tokens  set (guild_id,token,is_claimed) values (?,?,?) where token = ?";
+        String statement = "UPDATE warden_tokens set (claimed_by,token,is_claimed) = (?,?,?) where token = ?";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
@@ -86,21 +88,21 @@ public class TokensDao implements Dao<WardenTokens> {
             preparedStatement.setString(4,wardenTokens.getToken());
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException e){
-            Logger.getAnonymousLogger().warning(e.getMessage());
+            getMyLogger().fatal(e.getMessage());
             e.printStackTrace();
         }
         return false;
     }
     @Override
     public boolean delete(WardenTokens wardenTokens) {
-        String statement = "DELETE FROM warden_tokens where guild_id=?";
+        String statement = "DELETE FROM warden_tokens where id=?";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
-            preparedStatement.setLong(1,wardenTokens.getGuild_id());
+            preparedStatement.setLong(1,wardenTokens.getTokenId());
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException e){
-            Logger.getAnonymousLogger().warning(e.getMessage());
+            getMyLogger().fatal(e.getMessage());
             e.printStackTrace();
         }
         return false;

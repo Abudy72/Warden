@@ -1,11 +1,18 @@
 package Warden.Main;
 
 import Warden.Flyway.FlywayMigration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.net.URISyntaxException;
+
 
 public class Driver {
-    public static void main(String[] args) throws URISyntaxException {
+    private final static Logger logger = LogManager.getLogger(Driver.class);
+    public static void main(String[] args){
         FlywayMigration.migrate();
+    }
+
+    public static Logger getMyLogger(){
+        return logger;
     }
 }
