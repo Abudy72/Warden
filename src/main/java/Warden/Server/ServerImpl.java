@@ -1,6 +1,10 @@
 package Warden.Server;
 
-public class ServerImpl implements Server {
+import Warden.Server.Tokens.TokensDao;
+
+import java.util.List;
+
+public class ServerImpl implements Server, ServerValidator {
     private final long guild_id;
     private final String guild_name;
     private final String owner;
@@ -24,5 +28,17 @@ public class ServerImpl implements Server {
     @Override
     public String getName() {
         return this.getName();
+    }
+
+    @Override
+    public boolean validateServer(WardenTokens wardenTokens) {
+        TokensDao tokensDao = new TokensDao();
+        List<WardenTokens> tokensList = tokensDao.getAll();
+        boolean tokenStatus = tokensList.stream().anyMatch(token -> token.getToken().equals(wardenTokens.getToken()) && !token.isClaimed());
+        if(tokenStatus){
+            wardenTokens.claimTicket();
+            tokensDao.update(wardenTokens);
+            return true;
+        }else return false;
     }
 }
