@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import static Warden.Main.Driver.getMyLogger;
+
 public class ServerDao implements Dao<ServerImpl> {
     @Override
     public Optional<ServerImpl> get(long id) {
@@ -32,8 +34,7 @@ public class ServerDao implements Dao<ServerImpl> {
             preparedStatement.setString(3,serverImpl.getOwner());
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
-            Logger logger = Logger.getLogger(this.getClass().getName());
-            logger.severe(e.getMessage());
+            getMyLogger().fatal(e.getMessage());
             return false;
         }
     }
