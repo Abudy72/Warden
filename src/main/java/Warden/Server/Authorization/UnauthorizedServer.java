@@ -3,9 +3,7 @@ package Warden.Server.Authorization;
 import Warden.Server.ServerImpl;
 import Warden.Server.Tokens.TokensDao;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 public class UnauthorizedServer extends ServerImpl implements ServerState {
 
@@ -24,7 +22,6 @@ public class UnauthorizedServer extends ServerImpl implements ServerState {
             }
         });
     }
-
     @Override
     public boolean isServerVerified() {
         return false;

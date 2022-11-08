@@ -30,11 +30,9 @@ public class ServerImpl implements Server {
     public void setServerState(ServerState serverState){
         this.serverState = serverState;
     }
-
     public void registerServer(String token){
         serverState.registerServer(token);
     }
-
     public boolean isServerVerified(){
         return this.serverState.isServerVerified();
     }
