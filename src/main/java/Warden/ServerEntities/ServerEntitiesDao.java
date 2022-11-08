@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static Warden.Main.Driver.getMyLogger;
 
-public class EntitiesDao implements Dao<ServerEntities> {
+public class ServerEntitiesDao implements Dao<ServerEntities> {
     @Override
     public Optional<ServerEntities> get(long id) {
         String statement = "SELECT * FROM server_entities where entity_id = ?";
@@ -54,7 +54,6 @@ public class EntitiesDao implements Dao<ServerEntities> {
     @Override
     public boolean save(ServerEntities serverEntities) {
         String statement = "INSERT INTO server_entities values (?,?,?)";
-        LinkedList<ServerEntities> resultList = new LinkedList<>();
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
@@ -73,7 +72,6 @@ public class EntitiesDao implements Dao<ServerEntities> {
     @Override
     public boolean update(ServerEntities serverEntities) {
         String statement = "UPDATE server_entities set (guild_id,entity_name,entity_id) = (?,?,?) where guild_id = ? AND entity_name = ?";
-        LinkedList<ServerEntities> resultList = new LinkedList<>();
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);

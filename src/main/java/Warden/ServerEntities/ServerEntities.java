@@ -1,9 +1,4 @@
 package Warden.ServerEntities;
-
-import Warden.Server.ServerImpl;
-
-import java.util.HashMap;
-
 public class ServerEntities {
     private final long guild_id;
     private final String name;
@@ -14,7 +9,6 @@ public class ServerEntities {
         this.name = name;
         this.entity_id = entity_id;
     }
-
     public long getGuild_id() {
         return guild_id;
     }

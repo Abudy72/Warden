@@ -3,6 +3,6 @@ CREATE table server_entities(
     entity_name varchar(75) not null,
     entity_id bigint not null,
 
-    FOREIGN KEY(guild_id) REFERENCES servers(guild_id),
+    FOREIGN KEY(guild_id) REFERENCES servers(guild_id) ON DELETE CASCADE,
     PRIMARY KEY(entity_id,guild_id)
 )

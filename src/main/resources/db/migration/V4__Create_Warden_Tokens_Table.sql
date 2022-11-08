@@ -7,7 +7,7 @@ CREATE table warden_tokens(
     is_Claimed boolean not null DEFAULT false,
     claimed_by bigint UNIQUE,
 
-    FOREIGN KEY(claimed_by) REFERENCES servers(guild_id),
+    FOREIGN KEY(claimed_by) REFERENCES servers(guild_id) ON DELETE CASCADE ,
     PRIMARY KEY (id,token),
     CHECK ((is_Claimed = true AND claimed_by IS NOT NULL) OR
            (is_Claimed = false AND claimed_by IS NULL))
