@@ -2,7 +2,6 @@ package Warden.Members.Actions;
 
 import Warden.ConnectionPooling.ConnectionManager;
 import Warden.Dao.Dao;
-import Warden.Members.Action;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package Warden.Members;
+package Warden.Members.Actions;
 
 public enum Action {
     Warning,

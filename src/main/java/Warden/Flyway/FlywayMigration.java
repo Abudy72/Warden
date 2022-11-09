@@ -16,10 +16,10 @@ public class FlywayMigration {
             getMyLogger().fatal(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
-        String username = dbUri.getUserInfo().split(":")[0];
+        /*String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
-        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-        Flyway flyway = Flyway.configure().dataSource(dbUrl,username,password).defaultSchema("Warden").load();
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();*/
+        Flyway flyway = Flyway.configure().dataSource("jdbc:postgresql://localhost:5432/postgres","postgres","postgres").defaultSchema("Warden").load();
         flyway.migrate();
     }
 

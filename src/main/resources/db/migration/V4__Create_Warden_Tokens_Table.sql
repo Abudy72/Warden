@@ -5,7 +5,7 @@ CREATE table warden_tokens(
     id bigint DEFAULT (nextval('token_sequence')),
     token varchar(255) not null UNIQUE,
     is_Claimed boolean not null DEFAULT false,
-    claimed_by bigint UNIQUE,
+    claimed_by bigint UNIQUE DEFAULT NULL,
 
     FOREIGN KEY(claimed_by) REFERENCES servers(guild_id) ON DELETE CASCADE ,
     PRIMARY KEY (id,token),

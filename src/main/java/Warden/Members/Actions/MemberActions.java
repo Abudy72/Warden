@@ -1,6 +1,5 @@
 package Warden.Members.Actions;
 
-import Warden.Members.Action;
 import Warden.Members.Member;
 
 import java.sql.Timestamp;
