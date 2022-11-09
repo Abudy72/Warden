@@ -33,7 +33,7 @@ public class CreateToken extends CommandStrategy {
     public EmbedBuilder prepareEmbedMessage() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("New token was created successfully!");
-        embedBuilder.addField(new Field("New Token:","token: " + token.getToken() + " id:" + token.getTokenId(),true));
+        embedBuilder.addField(new Field("New Token:","token: " + token.getToken() + ":" + token.getTokenId(),true));
         int redeemedTokens = 0;
         int availableTokens = 0;
         StringBuilder tokens = new StringBuilder();
@@ -46,7 +46,7 @@ public class CreateToken extends CommandStrategy {
             }
 
         }
-        embedBuilder.addField(new Field("Tokens Details:","**Redeemed Tokens**: " + redeemedTokens + "\n**Available Tokens**" + availableTokens,true));
+        embedBuilder.addField(new Field("Tokens Details:","**Redeemed Tokens**: " + redeemedTokens + "\n**Available Tokens** " + availableTokens,true));
         embedBuilder.addField(new Field("List of available tokens:",tokens.toString(),false));
         return embedBuilder;
     }
