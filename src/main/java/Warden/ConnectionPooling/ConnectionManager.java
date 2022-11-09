@@ -4,11 +4,17 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 import java.net.URI;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.JDBCType;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import static Warden.Main.Driver.getMyLogger;
+
 public class ConnectionManager {
-    private static BasicDataSource dataSource = new BasicDataSource();
+    private static final BasicDataSource dataSource = new BasicDataSource();
     static {
         String username = null, password = null,dbUrl = null;
         URI dbUri;
@@ -18,30 +24,29 @@ public class ConnectionManager {
             password = dbUri.getUserInfo().split(":")[1];
             dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
         }catch (Exception e){
-            Logger logger = Logger.getLogger(ConnectionManager.class.getName());
-            logger.severe(e.getMessage());
+            getMyLogger().fatal(e.getMessage());
         }
 
-        System.out.println(password);
         //Setting database credentials
-        dataSource.setUrl(dbUrl);
-        dataSource.setUrl(username);
-        dataSource.setPassword(password);
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("postgres");
         dataSource.setMinIdle(5);
         dataSource.setMaxIdle(10);
         dataSource.setMaxActive(20);
+        List<String> p = new LinkedList<>();
+        p.add("SET SCHEMA 'Warden';");
+        dataSource.setConnectionInitSqls(p);
     }
 
     public static Connection getConnection(){
         try{
             Connection connection = dataSource.getConnection();
-            connection.setSchema("Warden");
             return connection;
         }catch (SQLException e){
-            Logger logger = Logger.getLogger(ConnectionManager.class.getName());
-            logger.severe(e.getMessage());
+            e.printStackTrace();
+         throw new RuntimeException(e.getMessage());
         }
-        return null;
     }
     private ConnectionManager(){}
 }

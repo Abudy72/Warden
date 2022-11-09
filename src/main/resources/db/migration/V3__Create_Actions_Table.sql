@@ -6,6 +6,6 @@ CREATE table actions(
     applied_by bigint not null,
     date_applied timestamp not null DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY(member_id) REFERENCES members(member_id),
+    FOREIGN KEY(member_id) REFERENCES members(member_id)ON DELETE CASCADE,
     FOREIGN KEY(guild_id) REFERENCES servers(guild_id)
 );

@@ -1,4 +1,4 @@
-package Warden.Members;
+package Warden.ServerEntities;
 
 import Warden.ConnectionPooling.ConnectionManager;
 import Warden.Dao.Dao;
@@ -13,44 +13,36 @@ import java.util.Optional;
 
 import static Warden.Main.Driver.getMyLogger;
 
-public class MembersDao implements Dao<Member> {
+public class ServerEntitiesDao implements Dao<ServerEntities> {
     @Override
-    public Optional<Member> get(long id) {
-        String statement = "SELECT * FROM members where member_id = ?";
+    public Optional<ServerEntities> get(long id) {
+        String statement = "SELECT * FROM server_entities where entity_id = ?";
         try{
             Connection connection = ConnectionManager.getConnection();
             ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
             if(resultSet.next()){
-                Member member = new Member(
-                        resultSet.getLong("member_id")
-                );
-                member.setBans(resultSet.getInt("bans"));
-                member.setStrikes(resultSet.getInt("strikes"));
-                member.setWarnings(resultSet.getInt("warnings"));
-                return Optional.of(member);
+                ServerEntities serverEntities = new ServerEntities(
+                        resultSet.getLong("guild_id"), resultSet.getString("name"),resultSet.getLong("entity_id"));
+                return Optional.of(serverEntities);
             }
         }catch (SQLException e){
-            getMyLogger().error("Unable to prepare statement, Check syntax please.");
+            getMyLogger().error("Unable to prepare statement, Check syntax please. ");
 
         }
         return Optional.empty();
     }
 
     @Override
-    public List<Member> getAll() {
-        String statement = "SELECT * FROM members";
-        LinkedList<Member> resultList = new LinkedList<>();
+    public List<ServerEntities> getAll() {
+        String statement = "SELECT * FROM server_entities";
+        LinkedList<ServerEntities> resultList = new LinkedList<>();
         try{
             Connection connection = ConnectionManager.getConnection();
             ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
             if(resultSet.next()){
-                Member member = new Member(
-                        resultSet.getLong("member_id")
-                );
-                member.setBans(resultSet.getInt("bans"));
-                member.setStrikes(resultSet.getInt("strikes"));
-                member.setWarnings(resultSet.getInt("warnings"));
-                resultList.add(member);
+                ServerEntities serverEntities = new ServerEntities(
+                        resultSet.getLong("guild_id"), resultSet.getString("name"),resultSet.getLong("entity_id"));
+                resultList.add(serverEntities);
             }
         }catch (SQLException e){
             getMyLogger().error("Unable to prepare statement, Check syntax please. ");
@@ -60,15 +52,15 @@ public class MembersDao implements Dao<Member> {
     }
 
     @Override
-    public boolean save(Member member) {
-        String statement = "INSERT INTO members values (?,?,?,?)";
+    public boolean save(ServerEntities serverEntities) {
+        String statement = "INSERT INTO server_entities values (?,?,?)";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
-            preparedStatement.setLong(1,member.getMemberId());
-            preparedStatement.setInt(2,member.getStrikes());
-            preparedStatement.setInt(3,member.getWarnings());
-            preparedStatement.setInt(4,member.getBans());
+            preparedStatement.setLong(1,serverEntities.getGuild_id());
+            preparedStatement.setString(2,serverEntities.getName());
+            preparedStatement.setLong(3,serverEntities.getEntity_id());
+
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException e){
             getMyLogger().error("Unable to prepare statement, Check syntax please. ");
@@ -78,15 +70,18 @@ public class MembersDao implements Dao<Member> {
     }
 
     @Override
-    public boolean update(Member member) {
-        String statement = "UPDATE members set (bans,strikes,warnings) = (?,?,?) where member_id = ?";
+    public boolean update(ServerEntities serverEntities) {
+        String statement = "UPDATE server_entities set (guild_id,entity_name,entity_id) = (?,?,?) where guild_id = ? AND entity_name = ?";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
-            preparedStatement.setInt(1,member.getBans());
-            preparedStatement.setInt(2,member.getStrikes());
-            preparedStatement.setInt(3,member.getWarnings());
-            preparedStatement.setLong(4,member.getMemberId());
+            preparedStatement.setLong(1,serverEntities.getGuild_id());
+            preparedStatement.setString(2,serverEntities.getName());
+            preparedStatement.setLong(3,serverEntities.getEntity_id());
+
+            preparedStatement.setLong(4,serverEntities.getGuild_id());
+            preparedStatement.setString(5,serverEntities.getName());
+
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException e){
             getMyLogger().error("Unable to prepare statement, Check syntax please. ");
@@ -96,12 +91,15 @@ public class MembersDao implements Dao<Member> {
     }
 
     @Override
-    public boolean delete(Member member) {
-        String statement = "DELETE FROM members where member_id = ?";
+    public boolean delete(ServerEntities serverEntities) {
+        String statement = "DELETE from server_entities where guild_id = ? and entity_id = ?";
+        LinkedList<ServerEntities> resultList = new LinkedList<>();
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
-            preparedStatement.setLong(1,member.getMemberId());
+            preparedStatement.setLong(1,serverEntities.getGuild_id());
+            preparedStatement.setLong(2,serverEntities.getEntity_id());
+
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException e){
             getMyLogger().error("Unable to prepare statement, Check syntax please. ");

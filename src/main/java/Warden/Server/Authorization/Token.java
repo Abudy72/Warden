@@ -3,12 +3,12 @@ package Warden.Server.Authorization;
 import java.util.Random;
 import java.util.UUID;
 
-public class WardenTokens{
+public class Token {
     private final String token;
     private long guild_id;
     private boolean claimed = false;
-    private long tokenId;
-     public WardenTokens(String token, long guild_id, boolean claimed, long tokenId) {
+    private final long tokenId;
+     public Token(String token, long guild_id, boolean claimed, long tokenId) {
         this.token = token;
         this.guild_id = guild_id;
         this.claimed = claimed;
@@ -16,12 +16,12 @@ public class WardenTokens{
     }
 
     //This will be used to create new tokens.
-    public WardenTokens() {
+    public Token() {
         Random rd = new Random();
         this.tokenId = rd.nextLong();
         this.token = createToken();
     }
-    public String createToken() {
+    private String createToken() {
         UUID newToken = UUID.randomUUID();
         return newToken.toString();
     }

@@ -21,4 +21,20 @@ public class Member {
     public void setBans(int bans) {
         this.bans = bans;
     }
+
+    public long getMemberId() {
+        return memberId;
+    }
+
+    public int getStrikes() {
+        return strikes;
+    }
+
+    public int getWarnings() {
+        return warnings;
+    }
+
+    public int getBans() {
+        return bans;
+    }
 }
