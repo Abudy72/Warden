@@ -8,7 +8,5 @@ CREATE table warden_tokens(
     claimed_by bigint UNIQUE DEFAULT NULL,
 
     FOREIGN KEY(claimed_by) REFERENCES servers(guild_id) ON DELETE CASCADE ,
-    PRIMARY KEY (id,token),
-    CHECK ((is_Claimed = true AND claimed_by IS NOT NULL) OR
-           (is_Claimed = false AND claimed_by IS NULL))
+    PRIMARY KEY (id,token)
 );

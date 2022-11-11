@@ -17,7 +17,7 @@ import javax.security.auth.login.LoginException;
 import static Warden.Main.Driver.getMyLogger;
 
 public class DiscordStarterImpl implements DiscordStarter {
-    private final Logger logger = LoggerFactory.getLogger(DiscordStarterImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(DiscordStarterImpl.class);
     @Override
     public void start() {
         String token  = System.getenv("DISCORD_BOT_WARDEN");
@@ -34,11 +34,12 @@ public class DiscordStarterImpl implements DiscordStarter {
             getMyLogger().log(Level.INFO,"JDA loaded!, loading commands.");
             JDA jda = jdaBuilder.build();
             jda.updateCommands().addCommands(CommandGenerator.loadCommands()).queue();
-            throw new LoginException("SIKE BITCH");
         }catch (LoginException exception){
             exception.printStackTrace();
-            logger.warn("SIKE BITCH");
-            getMyLogger().fatal("SIKE BBTICH");
         }
+    }
+
+    public static Logger getInfoLogger(){
+        return logger;
     }
 }

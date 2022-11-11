@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.LinkedList;
 import java.util.List;
 
+import static Warden.Main.DiscordStarterImpl.getInfoLogger;
 import static Warden.Main.Driver.getMyLogger;
 
 public class CreateToken extends CommandStrategy {
@@ -20,10 +21,9 @@ public class CreateToken extends CommandStrategy {
     private final List<Token> tokenList = new LinkedList<>();
     @Override
     public void executeCommand(SlashCommandInteractionEvent event) {
+        getInfoLogger().info("Creating a new token!");
         TokensDao tokensDao = new TokensDao();
-        myLogger.info("Creating new token...");
         tokensDao.save(token);
-        myLogger.info("Token saved!");
         tokenList.addAll(tokensDao.getAll());
 
         MessageEmbed messageEmbed = createResponse(event,"New Token has been created and saved! Below you will find details about available tokens",prepareEmbedMessage());

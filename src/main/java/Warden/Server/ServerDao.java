@@ -60,7 +60,7 @@ public class ServerDao implements Dao<ServerImpl> {
 
     @Override
     public boolean save(ServerImpl serverImpl) {
-        String statement = "INSERT INTO values (?,?,?)";
+        String statement = "INSERT INTO servers values (?,?,?)";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
