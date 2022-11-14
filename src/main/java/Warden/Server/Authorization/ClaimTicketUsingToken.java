@@ -19,7 +19,7 @@ public class ClaimTicketUsingToken implements ResourceBundle,ServerRegistration 
         try{
             Token token = tokensDao.get(token_id).get();
             if(!token.isClaimed()){
-                ServerImpl server = new ServerImpl(guild.getIdLong(),guild.getName(),"OWNER");
+                ServerImpl server = new ServerImpl(guild.getIdLong(),guild.getName());
                 serverDao.save(server);
                 token.setGuild_id(guild.getIdLong());
                 tokensDao.update(token);

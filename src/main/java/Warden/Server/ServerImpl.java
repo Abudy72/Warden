@@ -7,27 +7,20 @@ import net.dv8tion.jda.api.entities.Guild;
 public class ServerImpl implements Server, ServerRegistration {
     private final long guild_id;
     private final String guild_name;
-    private final String owner;
 
     private ServerRegistration registration = null;
-    public ServerImpl(long guild_id, String guild_name, String owner) {
+    public ServerImpl(long guild_id, String guild_name) {
         this.guild_id = guild_id;
         this.guild_name = guild_name;
-        this.owner = owner;
     }
-    public ServerImpl(long guild_id, String guild_name, String owner, ServerRegistration registration) {
+    public ServerImpl(long guild_id, String guild_name,ServerRegistration registration) {
         this.guild_id = guild_id;
         this.guild_name = guild_name;
-        this.owner = owner;
         this.registration = registration;
     }
     @Override
     public long getGuild_id() {
         return this.guild_id;
-    }
-    @Override
-    public String getOwner() {
-        return this.owner;
     }
     @Override
     public String getName() {

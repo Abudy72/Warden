@@ -11,6 +11,10 @@ import java.awt.*;
 public abstract class CommandStrategy{
     public abstract void executeCommand(SlashCommandInteractionEvent event);
 
+    /**
+     * Set title, description and fields
+     * @return preparedCustom message to be passed in craeteResponse
+     */
     public abstract EmbedBuilder prepareEmbedMessage();
 
     protected MessageEmbed createResponse(GenericCommandInteractionEvent event, @Nullable String description, EmbedBuilder embedBuilder){

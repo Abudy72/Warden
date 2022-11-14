@@ -39,22 +39,22 @@ public class RegisterServer implements ResourceBundle, ServerRegistration {
             return new ErrorHandler(REGISTRATION_ERR,REGISTRATION_ERR_MSG);
         }
     }
-
-    // TODO Fix method to apply override permissions for @role created
     private void configureServer(Guild guild){
         getInfoLogger().info("Attempting to configure: " + guild.getIdLong());
         ServerEntitiesDao serverEntitiesDao = new ServerEntitiesDao();
         try{
-            guild.createCategory("Warden").queue(category -> {
-                ServerEntities categoryEntity = new ServerEntities(guild.getIdLong(),NETWORK_CATEGORY,category.getIdLong());
-                category.createTextChannel("network-announcements").addPermissionOverride(guild.getPublicRole(),null, EnumSet.of(Permission.VIEW_CHANNEL)).queue(textChannel -> {
-                    ServerEntities channelEntity = new ServerEntities(guild.getIdLong(),NETWORK_ANNOUNCEMENTS,textChannel.getIdLong());
-                    guild.createRole().setColor(Color.black).setName("Network Staff").queue(role -> {
-                        ServerEntities roleEntity = new ServerEntities(guild.getIdLong(),NETWORK_MEMBER,role.getIdLong());
-                        serverEntitiesDao.save(categoryEntity);
-                        serverEntitiesDao.save(channelEntity);
-                        serverEntitiesDao.save(roleEntity);
-                    });
+            guild.createRole().setName("Warden Staff").setColor(Color.black).queue(role -> {
+                ServerEntities roleEntity = new ServerEntities(guild.getIdLong(),NETWORK_MEMBER,role.getIdLong());
+                guild.createCategory("Warden's_Corner").addPermissionOverride(guild.getPublicRole(),null, EnumSet.of(Permission.VIEW_CHANNEL)).
+                        addPermissionOverride(role,EnumSet.of(Permission.VIEW_CHANNEL),null).queue(category -> {
+                            ServerEntities categoryEntity = new ServerEntities(guild.getIdLong(),NETWORK_CATEGORY,category.getIdLong());
+                            category.createTextChannel("network-announcements").addPermissionOverride(role,EnumSet.of(Permission.MESSAGE_SEND),null).queue(textChannel -> {
+                                ServerEntities channelEntity = new ServerEntities(guild.getIdLong(),NETWORK_ANNOUNCEMENTS,textChannel.getIdLong());
+                                //saving entities to database
+                                serverEntitiesDao.save(categoryEntity);
+                                serverEntitiesDao.save(channelEntity);
+                                serverEntitiesDao.save(roleEntity);
+                            });
                 });
             });
         }catch (Exception e){

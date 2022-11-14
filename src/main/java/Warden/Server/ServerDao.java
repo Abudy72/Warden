@@ -24,8 +24,7 @@ public class ServerDao implements Dao<ServerImpl> {
             if(resultSet.next()){
                 ServerImpl server = new ServerImpl(
                         resultSet.getLong("guild_id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("owner")
+                        resultSet.getString("name")
                 );
                 return Optional.of(server);
             }
@@ -46,8 +45,7 @@ public class ServerDao implements Dao<ServerImpl> {
             if(resultSet.next()){
                 ServerImpl server = new ServerImpl(
                         resultSet.getLong("guild_id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("owner")
+                        resultSet.getString("name")
                 );
                 resultList.add(server);
             }
@@ -60,13 +58,12 @@ public class ServerDao implements Dao<ServerImpl> {
 
     @Override
     public boolean save(ServerImpl serverImpl) {
-        String statement = "INSERT INTO servers values (?,?,?)";
+        String statement = "INSERT INTO servers values (?,?)";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setLong(1,serverImpl.getGuild_id());
             preparedStatement.setString(2,serverImpl.getName());
-            preparedStatement.setString(3,serverImpl.getOwner());
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             getMyLogger().fatal(e.getMessage());
@@ -76,12 +73,11 @@ public class ServerDao implements Dao<ServerImpl> {
 
     @Override
     public boolean update(ServerImpl serverImpl) {
-        String statement = "UPDATE servers set (name,owner) = (?,?) where guild_id = ?";
+        String statement = "UPDATE servers set (name) = (?,?) where guild_id = ?";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setString(1,serverImpl.getName());
-            preparedStatement.setString(2,serverImpl.getOwner());
             preparedStatement.setLong(3,serverImpl.getGuild_id());
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {

@@ -3,14 +3,14 @@ package Warden.EventListeners.SlashCommand.Commands;
 import Warden.DataHandler.ErrorHandler;
 import Warden.EventListeners.ResourceBundle;
 import Warden.EventListeners.SlashCommand.CommandStrategy;
-
 import Warden.Server.Authorization.ClaimTicketUsingToken;
-import Warden.Server.Authorization.RegisterServer;
 import Warden.Server.ServerImpl;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageEmbed.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import static Warden.Main.Driver.getMyLogger;
 
@@ -20,15 +20,16 @@ public class SignUpServers extends CommandStrategy implements ResourceBundle {
         try{
             String givenToken = event.getOption(TOKEN_ID, OptionMapping::getAsString);
             long token = Long.parseLong(givenToken);
-            //Make this call ONLY IF roles, channels and categories were made.
+
             Guild guild = event.getGuild();
-            ServerImpl server = new ServerImpl(event.getGuild().getIdLong(),event.getGuild().getName(),
-                   "NAME", new RegisterServer());
-            ErrorHandler errorHandler = server.registerServer(token,event.getGuild());
+            ServerImpl server = new ServerImpl(event.getIdLong(),event.getName(), new ClaimTicketUsingToken());
+            ErrorHandler errorHandler = server.registerServer(token,guild);
             if(errorHandler == null){
-                event.reply("Your server is now ready!").queue();
-            }else {
-                event.reply(errorHandler.getERROR_CODE() + ": " + errorHandler.getERROR_MSG()).queue();
+                EmbedBuilder msgBuilder= prepareEmbedMessage();
+                event.replyEmbeds(createResponse(event,"Owner's approval is required to proceed.",msgBuilder)).setEphemeral(true).addActionRow(
+                        Button.success("true","✅ Accept"),
+                        Button.danger("false","❌ Decline")
+                ).queue();
             }
         }catch (NullPointerException e){
             getMyLogger().warn(e.getMessage());
@@ -39,6 +40,20 @@ public class SignUpServers extends CommandStrategy implements ResourceBundle {
 
     @Override
     public EmbedBuilder prepareEmbedMessage() {
-        return null;
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("By proceeding, you will give me permission to do the following.");
+        embedBuilder.addField(new Field("1. Creating a new category, it will be called `Warden's Corner`.","All warden related channels will be listed here.",false));
+        embedBuilder.addField(new Field("2. Creating a new channel, it will be called `network-announcements`.","All notifications about member actions will be posted here.",false));
+        embedBuilder.addField(new Field("3. Creating a new role, it will be called `Warden Staff`.","Server members will be able to issue an action and follow up on notifications",false));
+        return embedBuilder;
     }
 }
+
+
+
+
+
+
+
+
+
