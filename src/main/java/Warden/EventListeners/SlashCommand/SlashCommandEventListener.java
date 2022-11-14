@@ -20,12 +20,11 @@ public class SlashCommandEventListener extends ListenerAdapter implements Resour
                 }else defaultMessage(event);
                 break;
             case REGISTER_SERVER:
-                new SignUpServers().executeCommand(event);
-                /*if(event.getMember().getId().equals(event.getGuild().getOwnerId())){
+                if(event.getMember().getId().equals(event.getGuild().getOwnerId())){
                     new SignUpServers().executeCommand(event);
                 }else{
                     defaultMessage(event);
-                }*/
+                }
                 break;
             default:
                 defaultMessage(event);

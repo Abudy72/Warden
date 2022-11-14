@@ -6,6 +6,8 @@ import Warden.Server.ServerDao;
 import Warden.Server.ServerImpl;
 import net.dv8tion.jda.api.entities.Guild;
 
+import java.util.NoSuchElementException;
+
 import static Warden.Main.DiscordStarterImpl.getInfoLogger;
 import static Warden.Main.Driver.getMyLogger;
 
@@ -30,7 +32,7 @@ public class ClaimTicketUsingToken implements ResourceBundle,ServerRegistration 
         }catch (NullPointerException e){
             getMyLogger().warn(e.getMessage());
             return new ErrorHandler(TOKEN_ERR1,TOKEN_ERR1_MSG);
-        }catch (IllegalArgumentException e){
+        }catch (NoSuchElementException e){
             getMyLogger().warn(e.getMessage());
             return new ErrorHandler(TOKEN_ERR2,TOKEN_ERR2_MSG);
         }

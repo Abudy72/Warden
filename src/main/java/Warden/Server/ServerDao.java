@@ -20,7 +20,9 @@ public class ServerDao implements Dao<ServerImpl> {
         String statement = "SELECT * FROM servers where guild_id = ?";
         try{
             Connection connection = ConnectionManager.getConnection();
-            ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
+            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setLong(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 ServerImpl server = new ServerImpl(
                         resultSet.getLong("guild_id"),

@@ -48,7 +48,7 @@ public class RegisterServer implements ResourceBundle, ServerRegistration {
                 guild.createCategory("Warden's_Corner").addPermissionOverride(guild.getPublicRole(),null, EnumSet.of(Permission.VIEW_CHANNEL)).
                         addPermissionOverride(role,EnumSet.of(Permission.VIEW_CHANNEL),null).queue(category -> {
                             ServerEntities categoryEntity = new ServerEntities(guild.getIdLong(),NETWORK_CATEGORY,category.getIdLong());
-                            category.createTextChannel("network-announcements").addPermissionOverride(role,EnumSet.of(Permission.MESSAGE_SEND),null).queue(textChannel -> {
+                            category.createTextChannel("network-announcements").addPermissionOverride(role,EnumSet.of(Permission.VIEW_CHANNEL,Permission.MESSAGE_SEND),null).queue(textChannel -> {
                                 ServerEntities channelEntity = new ServerEntities(guild.getIdLong(),NETWORK_ANNOUNCEMENTS,textChannel.getIdLong());
                                 //saving entities to database
                                 serverEntitiesDao.save(categoryEntity);

@@ -1,5 +1,6 @@
 package Warden.Main;
 
+import Warden.EventListeners.SlashCommand.ButtonEventListeners.ServerRegistrationEventListener;
 import Warden.EventListeners.SlashCommand.SlashCommandEventListener;
 import Warden.WardenCommands.Generator.CommandGenerator;
 import net.dv8tion.jda.api.JDA;
@@ -29,7 +30,7 @@ public class DiscordStarterImpl implements DiscordStarter {
         jdaBuilder.setCompression(Compression.NONE);
         jdaBuilder.setActivity(Activity.watching("over your server."));
         //add event listeners
-        jdaBuilder.addEventListeners(new SlashCommandEventListener());
+        jdaBuilder.addEventListeners(new SlashCommandEventListener(), new ServerRegistrationEventListener());
         try {
             getMyLogger().log(Level.INFO,"JDA loaded!, loading commands.");
             JDA jda = jdaBuilder.build();

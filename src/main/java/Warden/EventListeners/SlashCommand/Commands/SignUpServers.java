@@ -15,6 +15,8 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import static Warden.Main.Driver.getMyLogger;
 
 public class SignUpServers extends CommandStrategy implements ResourceBundle {
+    static final String ACCEPT_STRING = "✅ Accept";
+    static final String DECLINE_STRING = "❌ Decline";
     @Override
     public void executeCommand(SlashCommandInteractionEvent event) {
         try{
@@ -27,9 +29,12 @@ public class SignUpServers extends CommandStrategy implements ResourceBundle {
             if(errorHandler == null){
                 EmbedBuilder msgBuilder= prepareEmbedMessage();
                 event.replyEmbeds(createResponse(event,"Owner's approval is required to proceed.",msgBuilder)).setEphemeral(true).addActionRow(
-                        Button.success("true","✅ Accept"),
-                        Button.danger("false","❌ Decline")
+                        Button.success(givenToken,ACCEPT_STRING),
+                        Button.danger("false",DECLINE_STRING)
                 ).queue();
+            }else {
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                event.replyEmbeds(createResponse(event, errorHandler.getERROR_CODE() + ": " + errorHandler.getERROR_MSG(),embedBuilder)).setEphemeral(true).queue();
             }
         }catch (NullPointerException e){
             getMyLogger().warn(e.getMessage());

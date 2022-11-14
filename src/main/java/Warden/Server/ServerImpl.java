@@ -27,6 +27,10 @@ public class ServerImpl implements Server, ServerRegistration {
         return this.guild_name;
     }
 
+    public void setRegistration(ServerRegistration serverRegistration){
+        this.registration = serverRegistration;
+    }
+
     @Override
     public ErrorHandler registerServer(long token_id, Guild guild) {
         return registration.registerServer(token_id,guild);
