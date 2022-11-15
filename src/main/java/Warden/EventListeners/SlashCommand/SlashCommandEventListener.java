@@ -2,7 +2,9 @@ package Warden.EventListeners.SlashCommand;
 
 import Warden.EventListeners.ResourceBundle;
 import Warden.EventListeners.SlashCommand.Commands.CreateToken;
+import Warden.EventListeners.SlashCommand.Commands.IssueAction;
 import Warden.EventListeners.SlashCommand.Commands.SignUpServers;
+import Warden.Members.Actions.Action;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -20,11 +22,21 @@ public class SlashCommandEventListener extends ListenerAdapter implements Resour
                 }else defaultMessage(event);
                 break;
             case REGISTER_SERVER:
-                if(event.getMember().getId().equals(event.getGuild().getOwnerId())){
-                    new SignUpServers().executeCommand(event);
+                new SignUpServers().executeCommand(event);
+               /* if(event.getMember().getId().equals(event.getGuild().getOwnerId())){
+
                 }else{
                     defaultMessage(event);
-                }
+                }*/
+                break;
+            case ISSUE_STRIKE:
+                new IssueAction(Action.Strike).executeCommand(event);
+                break;
+            case ISSUE_WARNING:
+                new IssueAction(Action.Warning).executeCommand(event);
+                break;
+            case BAN:
+                //new IssueAction(Action.Ban).executeCommand(event);
                 break;
             default:
                 defaultMessage(event);

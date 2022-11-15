@@ -19,7 +19,9 @@ public class MembersDao implements Dao<Member> {
         String statement = "SELECT * FROM members where member_id = ?";
         try{
             Connection connection = ConnectionManager.getConnection();
-            ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
+            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setLong(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 Member member = new Member(
                         resultSet.getLong("member_id")

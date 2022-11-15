@@ -37,4 +37,11 @@ public class Member {
     public int getBans() {
         return bans;
     }
+
+    public Member(long memberId, int strikes, int warnings, int bans) {
+        this.memberId = memberId;
+        this.strikes = strikes;
+        this.warnings = warnings;
+        this.bans = bans;
+    }
 }

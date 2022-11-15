@@ -19,6 +19,8 @@ public class ActionsDao implements Dao<MemberActions> {
         String statement = "SELECT * FROM actions where action_id = ?";
         try{
             Connection connection = ConnectionManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setLong(1,id);
             ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
             if(resultSet.next()){
                 MemberActions action = new MemberActions(
@@ -27,7 +29,8 @@ public class ActionsDao implements Dao<MemberActions> {
                         Action.valueOf(resultSet.getString("action_type")),
                         resultSet.getTimestamp("date_applied"),
                         resultSet.getLong("applied_by"),
-                        resultSet.getLong("guild_id")
+                        resultSet.getLong("guild_id"),
+                        resultSet.getString("reason")
                 );
                 return Optional.of(action);
             }
@@ -52,7 +55,8 @@ public class ActionsDao implements Dao<MemberActions> {
                         Action.valueOf(resultSet.getString("action_type")),
                         resultSet.getTimestamp("date_applied"),
                         resultSet.getLong("applied_by"),
-                        resultSet.getLong("guild_id")
+                        resultSet.getLong("guild_id"),
+                        resultSet.getString("reason")
                 );
                resultList.add(action);
             }
@@ -65,32 +69,34 @@ public class ActionsDao implements Dao<MemberActions> {
 
     @Override
     public boolean save(MemberActions memberActions) {
-        String statement = "INSERT INTO actions values (?,?,?,?,?,?)";
+        String statement = "INSERT INTO actions values (?,?,?,?,?,?,?)";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setLong(1,memberActions.getActionId());
             preparedStatement.setLong(2,memberActions.getMemberId());
             preparedStatement.setLong(3,memberActions.getGuild_id());
-            preparedStatement.setString(4,memberActions.getActionType().toString());
-            preparedStatement.setLong(5,memberActions.getAppliedBy());
-            preparedStatement.setTimestamp(6,memberActions.getDate());
+            preparedStatement.setString(4,memberActions.getReason());
+            preparedStatement.setString(5,memberActions.getActionType().toString());
+            preparedStatement.setLong(6,memberActions.getAppliedBy());
+            preparedStatement.setTimestamp(7,memberActions.getDate());
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException e){
             getMyLogger().error("Unable to prepare statement, Check syntax please.");
-
+            e.printStackTrace();
         }
         return false;
     }
 
     @Override
     public boolean update(MemberActions memberActions) {
-        String statement = "UPDATE actions set action_type = ? where action_id = ?";
+        String statement = "UPDATE actions set (action_type,reason) = (?,?) where action_id = ?";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setString(1,memberActions.getActionType().toString());
-            preparedStatement.setLong(2,memberActions.getActionId());
+            preparedStatement.setString(2,memberActions.getReason());
+            preparedStatement.setLong(3,memberActions.getActionId());
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException e){
             getMyLogger().error("Unable to prepare statement, Check syntax please.");
