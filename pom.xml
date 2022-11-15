@@ -31,11 +31,12 @@
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.19.0</version>
-        </dependency>-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.1</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -61,4 +62,63 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
+    <!--use mvn test jacoco:report-->
+   <build>
+       <plugins>
+           <plugin>
+               <groupId>org.jacoco</groupId>
+               <artifactId>jacoco-maven-plugin</artifactId>
+               <version>0.8.6</version>
+               <executions>
+                   <execution>
+                       <id>prepare-agent</id>
+                       <goals>
+                           <goal>prepare-agent</goal>
+                       </goals>
+                       <configuration>
+                           <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                           <propertyName>surefireArgLine</propertyName>
+                       </configuration>
+                   </execution>
+                   <execution>
+                       <id>jacoco-check</id>
+                       <goals>
+                           <goal>check</goal>
+                       </goals>
+                       <configuration>
+                           <rules>
+                               <rule>
+                                   <element>PACKAGE</element>
+                                   <limits>
+                                       <limit>
+                                           <counter>LINE</counter>
+                                           <value>COVEREDRATIO</value>
+                                           <minimum>0.80</minimum>
+                                       </limit>
+                                   </limits>
+                               </rule>
+                           </rules>
+                           <reporting>
+                               <plugins>
+                                   <plugin>
+                                       <groupId>org.jacoco</groupId>
+                                       <artifactId>jacoco-maven-plugin</artifactId>
+                                       <reportSets>
+                                           <reportSet>
+                                               <reports>
+                                                   <!-- select non-aggregate reports -->
+                                                   <report>report</report>
+                                               </reports>
+                                           </reportSet>
+                                       </reportSets>
+                                   </plugin>
+                               </plugins>
+                           </reporting>
+                       </configuration>
+                   </execution>
+               </executions>
+           </plugin>
+       </plugins>
+   </build>
 </project>

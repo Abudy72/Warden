@@ -15,7 +15,7 @@ public class SlashCommandEventListener extends ListenerAdapter implements Resour
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         switch (event.getName()){
             case CREATE_TOKEN:
-                if(event.getMember().getId().equals("199707685459984384")){
+                if(event.getMember().getId().equals("199707685459984384")){ //ONLY FOR ROYAL
                     new CreateToken().executeCommand(event);
                 }else defaultMessage(event);
                 break;
