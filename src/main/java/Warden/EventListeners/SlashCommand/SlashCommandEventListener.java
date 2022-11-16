@@ -5,7 +5,6 @@ import Warden.EventListeners.SlashCommand.Commands.CreateToken;
 import Warden.EventListeners.SlashCommand.Commands.IssueAction;
 import Warden.EventListeners.SlashCommand.Commands.SignUpServers;
 import Warden.Members.Actions.Action;
-import Warden.Server.NotificationSystem.Publisher;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -14,12 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 
 public class SlashCommandEventListener extends ListenerAdapter implements ResourceBundle {
-    private final Publisher publisher;
-
-    public SlashCommandEventListener(Publisher publisher) {
-        this.publisher = publisher;
-    }
-
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         switch (event.getName()){
@@ -37,10 +30,10 @@ public class SlashCommandEventListener extends ListenerAdapter implements Resour
                 }*/
                 break;
             case ISSUE_STRIKE:
-                new IssueAction(Action.Strike, publisher).executeCommand(event);
+                new IssueAction(Action.Strike).executeCommand(event);
                 break;
             case ISSUE_WARNING:
-                new IssueAction(Action.Warning, publisher).executeCommand(event);
+                new IssueAction(Action.Warning).executeCommand(event);
                 break;
             case BAN:
                 //new IssueAction(Action.Ban).executeCommand(event);

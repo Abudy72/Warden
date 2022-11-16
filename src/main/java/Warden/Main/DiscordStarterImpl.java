@@ -1,6 +1,6 @@
 package Warden.Main;
 
-import Warden.EventListeners.SlashCommand.ButtonEventListeners.ServerRegistrationEventListener;
+import Warden.EventListeners.SlashCommand.ButtonEventListeners.MainButtonEventListener;
 import Warden.EventListeners.SlashCommand.SlashCommandEventListener;
 import Warden.Server.NotificationSystem.Publisher;
 import Warden.Server.ServerDao;
@@ -33,7 +33,7 @@ public class DiscordStarterImpl implements DiscordStarter {
         jdaBuilder.setActivity(Activity.watching("over your server."));
         //add event listeners
         Publisher publisher = startNotificationService();
-        jdaBuilder.addEventListeners(new SlashCommandEventListener(publisher), new ServerRegistrationEventListener());
+        jdaBuilder.addEventListeners(new SlashCommandEventListener(), new MainButtonEventListener());
         try {
             getMyLogger().log(Level.INFO,"JDA loaded!, loading commands.");
             JDA jda = jdaBuilder.build();
@@ -45,8 +45,9 @@ public class DiscordStarterImpl implements DiscordStarter {
     private Publisher startNotificationService(){
         ServerDao dao = new ServerDao();
         Publisher publisher = new Publisher();
-
         dao.getAll().forEach(publisher::subscribeToNetwork);
+
+        getInfoLogger().info(publisher.getSubscriberCount() + " active listeners.");
         return publisher;
     }
 

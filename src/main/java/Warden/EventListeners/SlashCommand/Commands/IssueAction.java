@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.sql.Timestamp;
 import java.util.Optional;
@@ -21,11 +22,9 @@ import static Warden.Main.Driver.getMyLogger;
 public class IssueAction extends CommandStrategy implements ResourceBundle {
 
     private final Action action;
-    private final Publisher publisher;
 
-    public IssueAction(Action action, Publisher publisher) {
+    public IssueAction(Action action) {
         this.action = action;
-        this.publisher = publisher;
     }
 
     @Override
@@ -35,8 +34,7 @@ public class IssueAction extends CommandStrategy implements ResourceBundle {
         if(ActionManager.issueAction(memberActions,membersDao)){
             EmbedBuilder embedBuilder = prepareEmbedMessage();
             MessageEmbed msg = createResponse(event,"Action Details (issued to <@" +event.getOption(MEMBER).getAsUser().getIdLong() +">)\n" + memberActions,embedBuilder);
-            event.replyEmbeds(msg).queue();
-            publisher.publishNewAction(event.getJDA(), msg);
+            event.replyEmbeds(msg).addActionRow(Button.success(""+memberActions.getActionId(),NOTIFY_MEMBERS), Button.danger("Ignore","Ignore")).queue();
         }
     }
 

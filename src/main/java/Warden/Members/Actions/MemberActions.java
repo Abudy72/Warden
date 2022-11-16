@@ -14,6 +14,7 @@ public class MemberActions extends Member {
     private final String reason;
     public MemberActions(long memberId, long actionId, Enum<Action> actionType, Timestamp date, long appliedBy, long guild_id, String reason) {
         super(memberId);
+
         this.actionId = actionId;
         this.actionType = actionType;
         this.date = date;

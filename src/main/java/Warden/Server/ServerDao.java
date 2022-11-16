@@ -44,7 +44,7 @@ public class ServerDao implements Dao<ServerImpl> {
         try{
             Connection connection = ConnectionManager.getConnection();
             ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
-            if(resultSet.next()){
+            while(resultSet.next()){
                 ServerImpl server = new ServerImpl(
                         resultSet.getLong("guild_id"),
                         resultSet.getString("name")

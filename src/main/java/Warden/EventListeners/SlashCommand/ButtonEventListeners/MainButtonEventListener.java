@@ -6,7 +6,6 @@ import Warden.Server.ServerDao;
 import Warden.Server.ServerImpl;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -14,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class ServerRegistrationEventListener extends ListenerAdapter {
+public class MainButtonEventListener extends ListenerAdapter implements ButtonsDisabler {
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         disableButton(event);
@@ -53,12 +52,6 @@ public class ServerRegistrationEventListener extends ListenerAdapter {
         User user = event.getInteraction().getUser();
         user.openPrivateChannel().queue(privateChannel -> {
             privateChannel.sendMessageEmbeds(builder.build()).queue();
-        });
-    }
-
-    private void disableButton(ButtonInteractionEvent event){
-        event.getMessage().getActionRows().forEach(row -> {
-            event.editComponents(row.asDisabled()).queue();
         });
     }
 }

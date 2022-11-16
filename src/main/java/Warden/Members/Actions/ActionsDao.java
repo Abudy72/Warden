@@ -21,8 +21,9 @@ public class ActionsDao implements Dao<MemberActions> {
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setLong(1,id);
-            ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
+                System.out.println(resultSet.getString("action_type"));
                 MemberActions action = new MemberActions(
                         resultSet.getLong("member_id"),
                         resultSet.getLong("action_id"),
@@ -36,7 +37,7 @@ public class ActionsDao implements Dao<MemberActions> {
             }
         }catch (SQLException e){
             getMyLogger().error("Unable to prepare statement, Check syntax please.");
-
+            e.printStackTrace();
         }
         return Optional.empty();
     }
@@ -69,15 +70,15 @@ public class ActionsDao implements Dao<MemberActions> {
 
     @Override
     public boolean save(MemberActions memberActions) {
-        String statement = "INSERT INTO actions values (?,?,?,?,?,?,?)";
+        String statement = "INSERT INTO actions (action_id,member_id,guild_id,action_type,reason,applied_by,date_applied) values (?,?,?,?,?,?,?)";
         try{
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setLong(1,memberActions.getActionId());
             preparedStatement.setLong(2,memberActions.getMemberId());
             preparedStatement.setLong(3,memberActions.getGuild_id());
-            preparedStatement.setString(4,memberActions.getReason());
-            preparedStatement.setString(5,memberActions.getActionType().toString());
+            preparedStatement.setString(4,memberActions.getActionType().toString());
+            preparedStatement.setString(5,memberActions.getReason());
             preparedStatement.setLong(6,memberActions.getAppliedBy());
             preparedStatement.setTimestamp(7,memberActions.getDate());
             return preparedStatement.executeUpdate() == 1;

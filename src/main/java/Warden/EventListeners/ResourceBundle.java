@@ -28,4 +28,7 @@ public interface ResourceBundle {
     String NETWORK_CATEGORY = "network_category"; //Category
     String NETWORK_ANNOUNCEMENTS = "network_announcements"; //Channel
     String NETWORK_MEMBER = "network_member"; //Role
+
+    // ------------- Misc. -------------
+    String NOTIFY_MEMBERS = "Notify Network partners?";
 }
