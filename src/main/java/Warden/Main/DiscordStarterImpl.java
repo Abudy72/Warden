@@ -2,6 +2,8 @@ package Warden.Main;
 
 import Warden.EventListeners.SlashCommand.ButtonEventListeners.ServerRegistrationEventListener;
 import Warden.EventListeners.SlashCommand.SlashCommandEventListener;
+import Warden.Server.NotificationSystem.Publisher;
+import Warden.Server.ServerDao;
 import Warden.WardenCommands.Generator.CommandGenerator;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -30,7 +32,8 @@ public class DiscordStarterImpl implements DiscordStarter {
         jdaBuilder.setCompression(Compression.NONE);
         jdaBuilder.setActivity(Activity.watching("over your server."));
         //add event listeners
-        jdaBuilder.addEventListeners(new SlashCommandEventListener(), new ServerRegistrationEventListener());
+        Publisher publisher = startNotificationService();
+        jdaBuilder.addEventListeners(new SlashCommandEventListener(publisher), new ServerRegistrationEventListener());
         try {
             getMyLogger().log(Level.INFO,"JDA loaded!, loading commands.");
             JDA jda = jdaBuilder.build();
@@ -38,6 +41,13 @@ public class DiscordStarterImpl implements DiscordStarter {
         }catch (LoginException exception){
             exception.printStackTrace();
         }
+    }
+    private Publisher startNotificationService(){
+        ServerDao dao = new ServerDao();
+        Publisher publisher = new Publisher();
+
+        dao.getAll().forEach(publisher::subscribeToNetwork);
+        return publisher;
     }
 
     public static Logger getInfoLogger(){

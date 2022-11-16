@@ -39,14 +39,14 @@ public class ServerEntitiesDao implements Dao<ServerEntities> {
         try{
             Connection connection = ConnectionManager.getConnection();
             ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
-            if(resultSet.next()){
+            while(resultSet.next()){
                 ServerEntities serverEntities = new ServerEntities(
-                        resultSet.getLong("guild_id"), resultSet.getString("name"),resultSet.getLong("entity_id"));
+                        resultSet.getLong("guild_id"), resultSet.getString("entity_name"),resultSet.getLong("entity_id"));
                 resultList.add(serverEntities);
             }
         }catch (SQLException e){
             getMyLogger().error("Unable to prepare statement, Check syntax please. ");
-
+            e.printStackTrace();
         }
         return resultList;
     }
