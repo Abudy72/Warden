@@ -6,6 +6,7 @@ import Warden.Server.Authorization.ServerRegistration;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.util.HashMap;
 
@@ -38,10 +39,13 @@ public class ServerImpl implements Server, ServerRegistration, ResourceBundle {
     @Override
     public void notifyServer(JDA jdaInstance, MessageEmbed messageEmbed) {
         HashMap<String,Long> serverEntities = SERVER_ENTITIES.get(this.guild_id);
-        System.out.println(serverEntities.size());
         Long textChannelId = serverEntities.get(NETWORK_ANNOUNCEMENTS);
 
-        jdaInstance.getGuildById(this.guild_id).getTextChannelById(textChannelId).sendMessageEmbeds(messageEmbed).queue();
+        String actionId = messageEmbed.getFooter().getText().substring(11);
+        jdaInstance.getGuildById(this.guild_id).getTextChannelById(textChannelId).sendMessageEmbeds(messageEmbed)
+                .setActionRow(Button.success(actionId,ISSUE_SAME_ACTION),
+                        Button.danger("Ignore","Ignore"))
+                .queue();
         getInfoLogger().info(this.guild_id + " received a new message!");
     }
 
@@ -52,5 +56,23 @@ public class ServerImpl implements Server, ServerRegistration, ResourceBundle {
     @Override
     public ErrorHandler registerServer(long token_id, Guild guild) {
         return registration.registerServer(token_id,guild);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null){
+            return false;
+        }
+
+        if(o.getClass() != this.getClass()){
+            return true;
+        }
+
+        final Server obj = (Server) o;
+        if(obj.getGuild_id() == this.getGuild_id()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

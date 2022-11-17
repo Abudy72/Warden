@@ -25,6 +25,9 @@ public class MainButtonListener extends ListenerAdapter implements ResourceBundl
         }else if(label.equals(NOTIFY_MEMBERS)){
             buttonHandler = new ActionPublisherHandler(publisher);
             buttonHandler.executeButtonCommand(event);
+        }else if(label.equals(ISSUE_SAME_ACTION)){
+            buttonHandler = new CopyActionFromNetwork();
+            buttonHandler.executeButtonCommand(event);
         }
     }
 

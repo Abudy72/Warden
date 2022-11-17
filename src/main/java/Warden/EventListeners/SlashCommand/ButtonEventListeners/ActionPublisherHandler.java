@@ -32,11 +32,11 @@ public class ActionPublisherHandler implements ButtonHandler, ResourceBundle {
             embedBuilder.setAuthor("Warden's Network. [" + server.getName() + "]");
             String msgContent = "Action Details: (issued to <@" + action.getMemberId() + ">)" +
                     "\nType: " + action.getActionType().toString() +
-                    "\nIssued By: " + action.getAppliedBy() +
-                    "\nReason: " + action.getReason();
+                    "\nIssued By: <@" + action.getAppliedBy() +
+                    ">\nReason: " + action.getReason();
             embedBuilder.setDescription(msgContent);
-            embedBuilder.setFooter("Action ID: " + action.getActionId() + " | " + action.getDate());
-            publisher.publishNewAction(event.getJDA(), embedBuilder.build());
+            embedBuilder.setFooter("Action ID: " + action.getActionId());
+            publisher.publishNewAction(server,event.getJDA(), embedBuilder.build());
         }
     }
 }

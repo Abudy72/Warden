@@ -23,7 +23,6 @@ public class ActionsDao implements Dao<MemberActions> {
             preparedStatement.setLong(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                System.out.println(resultSet.getString("action_type"));
                 MemberActions action = new MemberActions(
                         resultSet.getLong("member_id"),
                         resultSet.getLong("action_id"),
