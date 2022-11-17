@@ -70,7 +70,8 @@ public class MemberActions extends Member {
 
     @Override
     public String toString() {
-        return "**Action ID: " + actionId +
+        return "Issued to: <@" + this.getMemberId() + ">\n" +
+                "**Action ID: " + actionId +
                 "\nAction type: " + actionType +
                 //"\tDate issued: " + date.toLocalDateTime().getMonth() + " " + date.toLocalDateTime().getDayOfMonth() + " " + date.toLocalDateTime().getYear() +
                 "\nApplied by: <@" + appliedBy + ">"+

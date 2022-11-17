@@ -2,6 +2,7 @@ package Warden.EventListeners.SlashCommand;
 
 import Warden.EventListeners.ResourceBundle;
 import Warden.EventListeners.SlashCommand.Commands.CreateToken;
+import Warden.EventListeners.SlashCommand.Commands.FetchFlaggedMembers;
 import Warden.EventListeners.SlashCommand.Commands.IssueAction;
 import Warden.EventListeners.SlashCommand.Commands.SignUpServers;
 import Warden.Members.Actions.Action;
@@ -37,6 +38,9 @@ public class SlashCommandEventListener extends ListenerAdapter implements Resour
                 break;
             case BAN:
                 //new IssueAction(Action.Ban).executeCommand(event);
+                break;
+            case WATCHLIST:
+                new FetchFlaggedMembers().executeCommand(event);
                 break;
             default:
                 defaultMessage(event);

@@ -33,7 +33,7 @@ public class IssueAction extends CommandStrategy implements ResourceBundle {
         MemberActions memberActions = createMemberAction(event,membersDao);
         if(ActionManager.issueAction(memberActions,membersDao)){
             EmbedBuilder embedBuilder = prepareEmbedMessage();
-            MessageEmbed msg = createResponse(event,"Action Details (issued to <@" +event.getOption(MEMBER).getAsUser().getIdLong() +">)\n" + memberActions,embedBuilder);
+            MessageEmbed msg = createResponse(event,memberActions.toString(),embedBuilder);
             event.replyEmbeds(msg).addActionRow(Button.success(""+memberActions.getActionId(),NOTIFY_MEMBERS), Button.danger("Ignore","Ignore")).queue();
         }
     }

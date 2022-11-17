@@ -43,12 +43,12 @@ public class ActionsDao implements Dao<MemberActions> {
 
     @Override
     public List<MemberActions> getAll() {
-        String statement = "SELECT * FROM actions";
+        String statement = "SELECT * FROM actions ORDER BY date_applied DESC";
         List<MemberActions> resultList = new LinkedList<>();
         try{
             Connection connection = ConnectionManager.getConnection();
             ResultSet resultSet = connection.prepareStatement(statement).executeQuery();
-            if(resultSet.next()){
+            while(resultSet.next()){
                 MemberActions action = new MemberActions(
                         resultSet.getLong("member_id"),
                         resultSet.getLong("action_id"),

@@ -41,7 +41,7 @@ public class CreateToken extends CommandStrategy {
             if(t.isClaimed()) redeemedTokens++;
             else {
                 availableTokens++;
-                tokens.append("\uD83E\uDE99 **Token: ").append(t.getToken()).append("** \uD83C\uDD94**id: ").append(t.getTokenId()).append("**\n");
+                tokens.append("\uD83E\uDE99 **Token: ").append(t.getToken()).append("** \uD83C\uDD94**: ").append(t.getTokenId()).append("**\n");
             }
 
         }
