@@ -15,8 +15,6 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import static Warden.Main.Driver.getMyLogger;
 
 public class SignUpServers extends CommandStrategy implements ResourceBundle {
-    static final String ACCEPT_STRING = "✅ Accept";
-    static final String DECLINE_STRING = "❌ Decline";
     @Override
     public void executeCommand(SlashCommandInteractionEvent event) {
         try{
@@ -49,7 +47,7 @@ public class SignUpServers extends CommandStrategy implements ResourceBundle {
         embedBuilder.setDescription("By proceeding, you will give me permission to do the following.");
         embedBuilder.addField(new Field("1. Creating a new category, it will be called `Warden's Corner`.","All warden related channels will be listed here.",false));
         embedBuilder.addField(new Field("2. Creating a new channel, it will be called `network-announcements`.","All notifications about member actions will be posted here.",false));
-        embedBuilder.addField(new Field("3. Creating a new role, it will be called `Warden Staff`.","Server members will be able to issue an action and follow up on notifications",false));
+        embedBuilder.addField(new Field("3. Creating a new role, it will be called `Warden Staff`.","Warden staff are be able to issue an action and follow up on notifications",false));
         return embedBuilder;
     }
 }

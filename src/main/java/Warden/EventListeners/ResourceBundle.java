@@ -31,4 +31,6 @@ public interface ResourceBundle {
 
     // ------------- Misc. -------------
     String NOTIFY_MEMBERS = "Notify Network partners?";
+    static final String ACCEPT_STRING = "✅ Accept";
+    static final String DECLINE_STRING = "❌ Decline";
 }

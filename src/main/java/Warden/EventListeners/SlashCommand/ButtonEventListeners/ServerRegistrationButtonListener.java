@@ -8,19 +8,16 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class MainButtonEventListener extends ListenerAdapter implements ButtonsDisabler {
+public class ServerRegistrationButtonListener implements ButtonHandler{
     @Override
-    public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
-        disableButton(event);
+    public void executeButtonCommand(@NotNull ButtonInteractionEvent event) {
         if(!event.getButton().getId().equals("false")){
             ServerDao dao = new ServerDao();
             Guild guild = event.getGuild();
-            System.out.println(guild.getIdLong());
             ServerImpl server = dao.get(guild.getIdLong()).get();
             server.setRegistration(new RegisterServer());
             long token = Long.parseLong(event.getButton().getId());
