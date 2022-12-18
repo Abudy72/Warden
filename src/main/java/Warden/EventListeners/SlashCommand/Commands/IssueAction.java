@@ -7,7 +7,6 @@ import Warden.Members.Actions.ActionManager;
 import Warden.Members.Actions.MemberActions;
 import Warden.Members.Member;
 import Warden.Members.MembersDao;
-import Warden.Server.NotificationSystem.Publisher;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -31,7 +30,7 @@ public class IssueAction extends CommandStrategy implements ResourceBundle {
     public void executeCommand(SlashCommandInteractionEvent event) {
         MembersDao membersDao = new MembersDao();
         MemberActions memberActions = createMemberAction(event,membersDao);
-        if(ActionManager.issueAction(memberActions,membersDao)){
+        if(ActionManager.issueAction(event,memberActions,membersDao)){
             EmbedBuilder embedBuilder = prepareEmbedMessage();
             MessageEmbed msg = createResponse(event,memberActions.toString(),embedBuilder);
             event.replyEmbeds(msg).addActionRow(Button.success(""+memberActions.getActionId(),NOTIFY_MEMBERS), Button.danger("Ignore","Ignore")).queue();

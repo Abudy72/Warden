@@ -37,7 +37,7 @@ public class SlashCommandEventListener extends ListenerAdapter implements Resour
                 new IssueAction(Action.Warning).executeCommand(event);
                 break;
             case BAN:
-                //new IssueAction(Action.Ban).executeCommand(event);
+                new IssueAction(Action.Ban).executeCommand(event);
                 break;
             case WATCHLIST:
                 new FetchFlaggedMembers().executeCommand(event);

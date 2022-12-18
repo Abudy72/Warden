@@ -14,6 +14,7 @@ public interface ResourceBundle {
     String TOKEN_ID = "token_id";
     String MEMBER = "member";
     String REASON = "reason";
+    String DAYS = "days";
 
 
     // ------------- ErrorCodes and ErrorMessages -------------
